@@ -8,9 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date 2022.12.21
  */
 @SpringBootApplication
-public class Http2ServerApplication {
+public class HttpServerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Http2ServerApplication.class);
+        SpringApplication.run(HttpServerApplication.class);
     }
 }
