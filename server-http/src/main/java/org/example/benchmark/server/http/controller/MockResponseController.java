@@ -1,4 +1,4 @@
-package org.example.benchmark.server.h2.controller;
+package org.example.benchmark.server.http.controller;
 
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;

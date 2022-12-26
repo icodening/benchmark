@@ -1,4 +1,4 @@
-package org.example.benchmark.server.h2;
+package org.example.benchmark.server.http;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

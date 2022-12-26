@@ -21,6 +21,8 @@ import org.openjdk.jmh.runner.options.ChainedOptionsBuilder;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.openjdk.jmh.runner.options.TimeValue;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
 import java.util.Collections;
@@ -39,13 +41,20 @@ public class H1 {
 
     private static final int CONCURRENT = 32;
 
-    private final ThreadLocal<CloseableHttpClient> apacheHC5;
+    private final CloseableHttpClient apacheHC5;
 
-    private final ThreadLocal<OkHttpClient> okhttpClient;
+    private final OkHttpClient okhttpClient;
+
+    private final WebClient webClient;
 
     public H1() {
-        this.apacheHC5 = ThreadLocal.withInitial(this::buildHttpClient);
-        this.okhttpClient = ThreadLocal.withInitial(this::buildOkHttpClient);
+        this.apacheHC5 = buildHttpClient();
+        this.okhttpClient = buildOkHttpClient();
+        this.webClient = this.buildWebClient();
+    }
+
+    private WebClient buildWebClient() {
+        return WebClient.builder().build();
     }
 
     private OkHttpClient buildOkHttpClient() {
@@ -63,7 +72,7 @@ public class H1 {
     @Benchmark
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
     public void apacheHC5() throws Throwable {
-        try (CloseableHttpResponse response = apacheHC5.get().execute(new HttpGet(REMOTE_ENDPOINT))) {
+        try (CloseableHttpResponse response = apacheHC5.execute(new HttpGet(REMOTE_ENDPOINT))) {
             HttpEntity entity = response.getEntity();
             try (InputStream content = entity.getContent()) {
                 byte[] data = new byte[8192];
@@ -74,17 +83,16 @@ public class H1 {
         }
     }
 
-//    @BenchmarkMode({Mode.Throughput})
-//    @Benchmark
-//    @OutputTimeUnit(TimeUnit.MILLISECONDS)
-//    public void reactorNetty() {
-//        this.nettyClient
-//                .get()
-//                .uri(REMOTE_ENDPOINT)
-//                .responseContent()
-//                .asByteArray()
-//                .blockFirst();
-//    }
+    @BenchmarkMode({Mode.Throughput})
+    @Benchmark
+    @OutputTimeUnit(TimeUnit.MILLISECONDS)
+    public void webClient() {
+        this.webClient
+                .get()
+                .uri(REMOTE_ENDPOINT)
+                .exchangeToFlux(Flux::just)
+                .blockFirst();
+    }
 
 
     @BenchmarkMode({Mode.Throughput})
@@ -96,7 +104,6 @@ public class H1 {
                 .get()
                 .build();
         Response response = this.okhttpClient
-                .get()
                 .newCall(request)
                 .execute();
         ResponseBody body = response.body();

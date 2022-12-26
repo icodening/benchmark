@@ -44,13 +44,13 @@ public class H2C {
 
     private final HttpClient nettyClient;
 
-    private final ThreadLocal<OkHttpClient> okHttpClient;
+    private final OkHttpClient okHttpClient;
 
-    private final ThreadLocal<CloseableHttpAsyncClient> hc5;
+    private final CloseableHttpAsyncClient hc5;
 
     public H2C() {
-        this.hc5 = ThreadLocal.withInitial(this::buildHC5);
-        this.okHttpClient = ThreadLocal.withInitial(this::buildOkHttpClient);
+        this.hc5 = this.buildHC5();
+        this.okHttpClient = this.buildOkHttpClient();
         this.nettyClient = buildNettyClient();
     }
 
@@ -77,7 +77,7 @@ public class H2C {
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
     public void apacheHC5() throws Throwable {
         SimpleHttpRequest request = SimpleHttpRequest.create(Method.GET, URI.create(REMOTE_ENDPOINT));
-        Future<SimpleHttpResponse> future = hc5.get().execute(request, null);
+        Future<SimpleHttpResponse> future = hc5.execute(request, null);
         future.get();
     }
 
@@ -101,7 +101,6 @@ public class H2C {
                 .get()
                 .build();
         Response response = this.okHttpClient
-                .get()
                 .newCall(request)
                 .execute();
         ResponseBody body = response.body();
