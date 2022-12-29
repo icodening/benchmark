@@ -19,7 +19,7 @@ import java.util.UUID;
  * @date 2022.12.22
  */
 public class MockResponseGatewayFilterFactory extends AbstractGatewayFilterFactory<MockResponseGatewayFilterFactory.Config> {
-
+    private static final String MOCK_FLAG = "mock from gateway server:";
 
     public MockResponseGatewayFilterFactory() {
         super(Config.class);
@@ -34,7 +34,8 @@ public class MockResponseGatewayFilterFactory extends AbstractGatewayFilterFacto
     public GatewayFilter apply(Config config) {
         long size = config.getResponseSize().toBytes();
         StringBuilder body = new StringBuilder((int) size);
-        for (int i = 0; i < size; i++) {
+        body.append(MOCK_FLAG);
+        for (int i = 0; i < size - MOCK_FLAG.length(); i++) {
             String randomString = UUID.randomUUID().toString();
             body.append(randomString.charAt(0));
         }
