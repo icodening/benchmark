@@ -21,6 +21,8 @@ import org.openjdk.jmh.runner.options.ChainedOptionsBuilder;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.openjdk.jmh.runner.options.TimeValue;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 import reactor.netty.http.HttpProtocol;
 import reactor.netty.http.client.HttpClient;
 
@@ -48,10 +50,17 @@ public class H2C {
 
     private final CloseableHttpAsyncClient hc5;
 
+    private final WebClient webClient;
+
     public H2C() {
         this.hc5 = this.buildHC5();
         this.okHttpClient = this.buildOkHttpClient();
-        this.nettyClient = buildNettyClient();
+        this.nettyClient = this.buildNettyClient();
+        this.webClient = this.buildWebClient();
+    }
+
+    private WebClient buildWebClient() {
+        return WebClient.create();
     }
 
     private OkHttpClient buildOkHttpClient() {
@@ -88,8 +97,17 @@ public class H2C {
         this.nettyClient.get()
                 .uri(REMOTE_ENDPOINT)
                 .responseContent()
-                .asByteArray()
                 .blockFirst();
+    }
+
+    @BenchmarkMode({Mode.Throughput})
+    @Benchmark
+    @OutputTimeUnit(TimeUnit.MILLISECONDS)
+    public void webClient() {
+        this.webClient.get()
+                .uri(REMOTE_ENDPOINT)
+                .exchangeToMono(Mono::just)
+                .block();
     }
 
     @BenchmarkMode({Mode.Throughput})

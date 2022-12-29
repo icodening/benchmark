@@ -48,13 +48,13 @@ public class H1 {
     private final WebClient webClient;
 
     public H1() {
-        this.apacheHC5 = buildHttpClient();
-        this.okhttpClient = buildOkHttpClient();
+        this.apacheHC5 = this.buildHttpClient();
+        this.okhttpClient = this.buildOkHttpClient();
         this.webClient = this.buildWebClient();
     }
 
     private WebClient buildWebClient() {
-        return WebClient.builder().build();
+        return WebClient.create();
     }
 
     private OkHttpClient buildOkHttpClient() {
