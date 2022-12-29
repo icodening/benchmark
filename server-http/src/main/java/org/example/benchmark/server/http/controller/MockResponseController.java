@@ -1,5 +1,6 @@
 package org.example.benchmark.server.http.controller;
 
+import org.example.benchmark.server.http.config.HttpServerProperties;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.core.io.buffer.DefaultDataBufferFactory;
@@ -19,12 +20,10 @@ public class MockResponseController {
 
     private static final DataBufferFactory FACTORY = DefaultDataBufferFactory.sharedInstance;
 
-    private static final DataSize DEFAULT_SIZE = DataSize.ofKilobytes(1);
-
     private final Mono<DataBuffer> data;
 
-    public MockResponseController() {
-        DataSize responseSize = DEFAULT_SIZE;
+    public MockResponseController(HttpServerProperties httpServerProperties) {
+        DataSize responseSize = httpServerProperties.getMockResponseSize();
         int size = (int) responseSize.toBytes();
         StringBuilder body = new StringBuilder(size);
         for (int i = 0; i < size; i++) {
@@ -34,7 +33,7 @@ public class MockResponseController {
         this.data = Mono.defer(() -> Mono.just(FACTORY.wrap(body.toString().getBytes())));
     }
 
-    @RequestMapping("/benchmark")
+    @RequestMapping(value = "/benchmark", produces = "text/plain")
     public Mono<DataBuffer> benchmark() {
         return data;
     }
