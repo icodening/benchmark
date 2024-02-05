@@ -92,8 +92,8 @@ public class H1 {
     }
 
     @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
-//    @Benchmark
-    @OutputTimeUnit(TimeUnit.MILLISECONDS)
+    @Benchmark
+    @OutputTimeUnit(TimeUnit.SECONDS)
     public void apacheHC5Benchmark() throws Throwable {
         try (CloseableHttpResponse response = apacheHC5.execute(new HttpGet(REMOTE_ENDPOINT))) {
             HttpEntity entity = response.getEntity();
@@ -109,24 +109,23 @@ public class H1 {
         }
     }
 
-    @BenchmarkMode({Mode.Throughput})
-//    @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
+    @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
     @Benchmark
-    @OutputTimeUnit(TimeUnit.MILLISECONDS)
+    @OutputTimeUnit(TimeUnit.SECONDS)
     public void restTemplateBenchmark() {
         String resp = this.restTemplate.getForObject(URI.create(REMOTE_ENDPOINT), String.class);
     }
 
     @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
-//    @Benchmark
-    @OutputTimeUnit(TimeUnit.MILLISECONDS)
+    @Benchmark
+    @OutputTimeUnit(TimeUnit.SECONDS)
     public void feignClientBenchmark() {
         String resp = feignService.benchmark();
     }
 
     @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
-//    @Benchmark
-    @OutputTimeUnit(TimeUnit.MILLISECONDS)
+    @Benchmark
+    @OutputTimeUnit(TimeUnit.SECONDS)
     public void webClientBenchmark() {
         this.webClient
                 .get()
@@ -137,8 +136,8 @@ public class H1 {
 
 
     @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
-//    @Benchmark
-    @OutputTimeUnit(TimeUnit.MILLISECONDS)
+    @Benchmark
+    @OutputTimeUnit(TimeUnit.SECONDS)
     public void okHttpClientBenchmark() throws Throwable {
         Request request = new Request.Builder()
                 .url(REMOTE_ENDPOINT)
