@@ -23,10 +23,12 @@ jobs:
             
       - name: Run benchmark for h1server
         run: |
-          mvn clean package -Ph1
+          cd server-http
+          mvn clean package
           java -jar server-http/target/http-server.jar
 
       - name: Run benchmark for h1client
         run: |
+          cd client
           mvn clean package -Ph1
           java -jar client/target/benchmark-client-h1.jar
