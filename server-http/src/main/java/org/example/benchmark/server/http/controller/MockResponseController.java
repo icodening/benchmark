@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author icodening
@@ -20,9 +21,29 @@ public class MockResponseController {
 
     private static final DataBufferFactory FACTORY = DefaultDataBufferFactory.sharedInstance;
 
+    private final HttpServerProperties httpServerProperties;
+
     private final Mono<DataBuffer> data;
 
+    private static final AtomicInteger COUNTER = new AtomicInteger();
+
     public MockResponseController(HttpServerProperties httpServerProperties) {
+        this.httpServerProperties = httpServerProperties;
+        this.data = mockData();
+    }
+
+    @RequestMapping(value = "/benchmark", produces = "text/plain")
+    public Mono<DataBuffer> benchmark() {
+        COUNTER.incrementAndGet();
+        return data;
+    }
+
+    @RequestMapping("/count")
+    public int get() {
+        return COUNTER.getAndSet(0);
+    }
+
+    private Mono<DataBuffer> mockData() {
         DataSize responseSize = httpServerProperties.getMockResponseSize();
         int size = (int) responseSize.toBytes();
         StringBuilder body = new StringBuilder(size);
@@ -30,11 +51,6 @@ public class MockResponseController {
             String randomString = UUID.randomUUID().toString();
             body.append(randomString.charAt(0));
         }
-        this.data = Mono.defer(() -> Mono.just(FACTORY.wrap(body.toString().getBytes())));
-    }
-
-    @RequestMapping(value = "/benchmark", produces = "text/plain")
-    public Mono<DataBuffer> benchmark() {
-        return data;
+        return Mono.defer(() -> Mono.just(FACTORY.wrap(body.toString().getBytes())));
     }
 }

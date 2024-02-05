@@ -1,5 +1,7 @@
 package org.example.benchmark.client;
 
+import feign.Feign;
+import feign.jaxrs2.JAXRS2Contract;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
 import okhttp3.Request;
@@ -21,10 +23,14 @@ import org.openjdk.jmh.runner.options.ChainedOptionsBuilder;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.openjdk.jmh.runner.options.TimeValue;
+import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.net.URI;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
@@ -47,10 +53,27 @@ public class H1 {
 
     private final WebClient webClient;
 
+    private final RestTemplate restTemplate;
+
+    private final FeignService feignService;
+
     public H1() {
         this.apacheHC5 = this.buildHttpClient();
         this.okhttpClient = this.buildOkHttpClient();
         this.webClient = this.buildWebClient();
+        this.restTemplate = this.buildRestTemplate();
+        this.feignService = this.buildFeignService();
+    }
+
+    private FeignService buildFeignService() {
+        return Feign.builder()
+                .client(new feign.okhttp.OkHttpClient(okhttpClient))
+                .contract(new JAXRS2Contract())
+                .target(FeignService.class, REMOTE_ADDRESS);
+    }
+
+    private RestTemplate buildRestTemplate() {
+        return new RestTemplate(new OkHttp3ClientHttpRequestFactory(okhttpClient));
     }
 
     private WebClient buildWebClient() {
@@ -68,25 +91,42 @@ public class H1 {
                 .build();
     }
 
-    @BenchmarkMode({Mode.Throughput})
+    @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
     @Benchmark
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
-    public void apacheHC5() throws Throwable {
+    public void apacheHC5Benchmark() throws Throwable {
         try (CloseableHttpResponse response = apacheHC5.execute(new HttpGet(REMOTE_ENDPOINT))) {
             HttpEntity entity = response.getEntity();
             try (InputStream content = entity.getContent()) {
-                byte[] data = new byte[8192];
-                while ((content.read(data)) != -1) {
-
+                byte[] data = new byte[1024];
+                ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
+                int len;
+                while ((len = content.read(data)) != -1) {
+                    bos.write(data, 0, len);
                 }
+                String resp = bos.toString();
             }
         }
     }
 
-    @BenchmarkMode({Mode.Throughput})
+    @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
     @Benchmark
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
-    public void webClient() {
+    public void restTemplateBenchmark() {
+        String resp = this.restTemplate.getForObject(URI.create(REMOTE_ENDPOINT), String.class);
+    }
+
+    @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
+    @Benchmark
+    @OutputTimeUnit(TimeUnit.MILLISECONDS)
+    public void feignClientBenchmark() {
+        String resp = feignService.benchmark();
+    }
+
+    @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
+    @Benchmark
+    @OutputTimeUnit(TimeUnit.MILLISECONDS)
+    public void webClientBenchmark() {
         this.webClient
                 .get()
                 .uri(REMOTE_ENDPOINT)
@@ -95,10 +135,10 @@ public class H1 {
     }
 
 
-    @BenchmarkMode({Mode.Throughput})
+    @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
     @Benchmark
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
-    public void okHttpClient() throws Throwable {
+    public void okHttpClientBenchmark() throws Throwable {
         Request request = new Request.Builder()
                 .url(REMOTE_ENDPOINT)
                 .get()
@@ -108,7 +148,7 @@ public class H1 {
                 .execute();
         ResponseBody body = response.body();
         if (body != null) {
-            body.bytes();
+            new String(body.bytes());
         }
     }
 
@@ -120,7 +160,7 @@ public class H1 {
                 .warmupTime(TimeValue.seconds(10))
                 .measurementIterations(3)
                 .measurementTime(TimeValue.seconds(10))
-                .threads(CONCURRENT).forks(1);
+                .threads(CONCURRENT).forks(0);
         opt = optBuilder.build();
 
         new Runner(opt).run();
