@@ -19,7 +19,6 @@ import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.runner.Runner;
-import org.openjdk.jmh.runner.options.ChainedOptionsBuilder;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.openjdk.jmh.runner.options.TimeValue;
@@ -153,16 +152,16 @@ public class H1 {
     }
 
     public static void main(String[] args) throws Throwable {
-        Options opt;
-        ChainedOptionsBuilder optBuilder = new OptionsBuilder()
+        Options opt = new OptionsBuilder()
+                .detectJvmArgs()
+                .result("jmh_result.json")
                 .include(H1.class.getSimpleName())
                 .warmupIterations(3)
                 .warmupTime(TimeValue.seconds(10))
                 .measurementIterations(3)
                 .measurementTime(TimeValue.seconds(10))
-                .threads(CONCURRENT).forks(0);
-        opt = optBuilder.build();
-
+                .threads(CONCURRENT).forks(0)
+                .build();
         new Runner(opt).run();
     }
 }

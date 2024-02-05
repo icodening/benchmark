@@ -30,7 +30,7 @@ jobs:
         with:
           name: JMH Benchmark
           tool: 'jmh'
-          output-file-path: client/jmh-result.json
+          output-file-path: jmh_result.json
           # Use personal access token instead of GITHUB_TOKEN due to https://github.community/t/github-action-not-triggering-gh-pages-upon-push/16096
           github-token: ${{ secrets.GITHUB_TOKEN }}
           auto-push: true
