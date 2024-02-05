@@ -1,0 +1,12 @@
+name: Benchmark
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Continuous Benchmark
+        uses: benchmark-action/github-action-benchmark@v1.19.3
