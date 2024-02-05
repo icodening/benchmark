@@ -18,6 +18,7 @@ import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.results.format.ResultFormatType;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
@@ -154,6 +155,7 @@ public class H1 {
     public static void main(String[] args) throws Throwable {
         Options opt = new OptionsBuilder()
                 .detectJvmArgs()
+                .resultFormat(ResultFormatType.JSON)
                 .result("jmh_result.json")
                 .include(H1.class.getSimpleName())
                 .warmupIterations(3)
