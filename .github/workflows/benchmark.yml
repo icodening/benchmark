@@ -5,8 +5,8 @@ on:
       - main
 
 jobs:
-  benchmark:
-    name: Run JMH benchmark
+  build:
+    name: build project
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-java@v3
@@ -21,16 +21,24 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
             ${{ runner.os }}-maven-
-            
+      - name: build http server
+        run: |
+          mvn clean package
+
+      - name: build http client
+        run: |
+          mvn clean package -Ph1
+
+  benchmark:
+    name: build project
+    runs-on: ubuntu-latest
+    steps:
       - name: Run benchmark for h1server
         run: |
           mvn clean package
           java -jar server-http/target/http-server.jar
 
       - name: Run benchmark for h1client
-        with:
-          working-directory: client
         run: |
-          cd client
           mvn clean package -Ph1
           java -jar client/target/benchmark-client-h1.jar
