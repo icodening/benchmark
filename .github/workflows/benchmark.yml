@@ -20,5 +20,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
             ${{ runner.os }}-maven-
-      - name: Continuous Benchmark
-        uses: benchmark-action/github-action-benchmark@v1.19.3
+            
+      - name: Run benchmark for h1server
+        run: |
+          mvn clean package -Ph1
+          java -jar client/target/http-server.jar
+
+      - name: Run benchmark for h1client
+        run: |
+          mvn clean package -Ph1
+          java -jar client/target/benchmark-client-h1.jar

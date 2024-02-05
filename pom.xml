@@ -20,9 +20,10 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
 
-        <springboot.version>2.7.6</springboot.version>
+        <springboot.version>2.7.18</springboot.version>
         <spring-cloud-alibaba-bom.version>2021.0.4.0</spring-cloud-alibaba-bom.version>
-        <spring-cloud.version>2021.0.5</spring-cloud.version>
+        <spring-cloud.version>2021.0.9</spring-cloud.version>
+        <feign.version>13.2</feign.version>
         <jmh.version>1.21</jmh.version>
     </properties>
 
