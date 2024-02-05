@@ -92,7 +92,7 @@ public class H1 {
     }
 
     @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
-    @Benchmark
+//    @Benchmark
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
     public void apacheHC5Benchmark() throws Throwable {
         try (CloseableHttpResponse response = apacheHC5.execute(new HttpGet(REMOTE_ENDPOINT))) {
@@ -109,7 +109,8 @@ public class H1 {
         }
     }
 
-    @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
+    @BenchmarkMode({Mode.Throughput})
+//    @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
     @Benchmark
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
     public void restTemplateBenchmark() {
@@ -117,14 +118,14 @@ public class H1 {
     }
 
     @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
-    @Benchmark
+//    @Benchmark
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
     public void feignClientBenchmark() {
         String resp = feignService.benchmark();
     }
 
     @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
-    @Benchmark
+//    @Benchmark
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
     public void webClientBenchmark() {
         this.webClient
@@ -136,7 +137,7 @@ public class H1 {
 
 
     @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
-    @Benchmark
+//    @Benchmark
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
     public void okHttpClientBenchmark() throws Throwable {
         Request request = new Request.Builder()
