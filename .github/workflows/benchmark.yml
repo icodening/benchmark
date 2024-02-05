@@ -27,7 +27,7 @@ jobs:
 
       - name: Run benchmark for h1client
         run: |
-          java -jar client/target/benchmark-client-h1.jar -wi 1 -i 3 -f 1 -rf json
+          java -jar client/target/benchmark-client-h1.jar -wi 3 -i 3 -f 1 -rf jmh_result.json
 
       - name: Store benchmark result
         uses: benchmark-action/github-action-benchmark@v1

@@ -32,6 +32,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -153,17 +155,60 @@ public class H1 {
     }
 
     public static void main(String[] args) throws Throwable {
+        Map<String, String> properties = parseArguments(args);
+        //-wi 1 -i 3 -f 1 -rf json
+        int warmupIterations = getInt(properties, "-w", 3);
+        int measurementIterations = getInt(properties, "-i", 3);
+        int forks = getInt(properties, "-f", 1);
+        int threads = getInt(properties, "-t", CONCURRENT);
+        String fileName = getString(properties, "-rf", "jmh_result.json");
+        String suffix = "json";
+        if (fileName.contains(".")) {
+            suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
+        }
+        ResultFormatType resultFormatType = ResultFormatType.valueOf(suffix.toUpperCase());
+
         Options opt = new OptionsBuilder()
                 .detectJvmArgs()
-                .resultFormat(ResultFormatType.JSON)
-                .result("jmh_result.json")
+                .resultFormat(resultFormatType)
+                .result(fileName)
                 .include(H1.class.getSimpleName())
-                .warmupIterations(3)
+                .warmupIterations(warmupIterations)
                 .warmupTime(TimeValue.seconds(10))
-                .measurementIterations(3)
+                .measurementIterations(measurementIterations)
                 .measurementTime(TimeValue.seconds(10))
-                .threads(CONCURRENT).forks(0)
+                .threads(threads)
+                .forks(forks)
                 .build();
         new Runner(opt).run();
+    }
+
+    private static int getInt(Map<String, String> properties, String name, int defaultValue) {
+        String value = properties.get(name);
+        int result = defaultValue;
+        try {
+            if (value != null) {
+                result = Integer.parseInt(value);
+            }
+        } catch (NumberFormatException ignore) {
+        }
+        return result;
+    }
+
+    private static String getString(Map<String, String> properties, String name, String defaultValue) {
+        return properties.getOrDefault(name, defaultValue);
+    }
+
+    private static Map<String, String> parseArguments(String[] args) {
+        Map<String, String> properties = new LinkedHashMap<>();
+        for (int i = 0; i < args.length; i += 2) {
+            String argName = args[i];
+            String argValue = null;
+            if (i + 1 < args.length) {
+                argValue = args[i + 1];
+            }
+            properties.put(argName, argValue);
+        }
+        return properties;
     }
 }
