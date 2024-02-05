@@ -24,7 +24,7 @@ jobs:
       - name: Run benchmark for h1server
         run: |
           mvn clean package -Ph1
-          java -jar client/target/http-server.jar
+          java -jar server-http/target/http-server.jar
 
       - name: Run benchmark for h1client
         run: |
