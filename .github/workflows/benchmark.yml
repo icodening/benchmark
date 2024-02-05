@@ -5,7 +5,8 @@ on:
       - main
 
 jobs:
-  build:
+  benchmark:
+    name: Run JMH benchmark
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-java@v3
@@ -22,12 +23,15 @@ jobs:
             ${{ runner.os }}-maven-
             
       - name: Run benchmark for h1server
+        with:
+          working-directory: server-http
         run: |
-          cd server-http
           mvn clean package
           java -jar server-http/target/http-server.jar
 
       - name: Run benchmark for h1client
+        with:
+          working-directory: client
         run: |
           cd client
           mvn clean package -Ph1
