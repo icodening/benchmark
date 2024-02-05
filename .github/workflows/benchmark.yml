@@ -23,8 +23,6 @@ jobs:
             ${{ runner.os }}-maven-
             
       - name: Run benchmark for h1server
-        with:
-          working-directory: server-http
         run: |
           mvn clean package
           java -jar server-http/target/http-server.jar
