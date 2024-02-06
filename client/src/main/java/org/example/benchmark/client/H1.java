@@ -7,6 +7,10 @@ import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Option;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
@@ -18,9 +22,10 @@ import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.profile.Profiler;
 import org.openjdk.jmh.results.format.ResultFormatType;
 import org.openjdk.jmh.runner.Runner;
-import org.openjdk.jmh.runner.options.Options;
+import org.openjdk.jmh.runner.options.ChainedOptionsBuilder;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.openjdk.jmh.runner.options.TimeValue;
 import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
@@ -32,8 +37,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -46,8 +49,6 @@ public class H1 {
     private static final String REMOTE_ADDRESS = "http://127.0.0.1:8080";
 
     private static final String REMOTE_ENDPOINT = REMOTE_ADDRESS + "/benchmark";
-
-    private static final int CONCURRENT = 32;
 
     private final CloseableHttpClient apacheHC5;
 
@@ -155,60 +156,40 @@ public class H1 {
     }
 
     public static void main(String[] args) throws Throwable {
-        Map<String, String> properties = parseArguments(args);
-        //-wi 1 -i 3 -f 1 -rf json
-        int warmupIterations = getInt(properties, "-w", 3);
-        int measurementIterations = getInt(properties, "-i", 3);
-        int forks = getInt(properties, "-f", 1);
-        int threads = getInt(properties, "-t", CONCURRENT);
-        String fileName = getString(properties, "-rf", "jmh_result.json");
+        org.apache.commons.cli.Options options = new org.apache.commons.cli.Options();
+        for (SupportOptions option : SupportOptions.values()) {
+            options.addOption(Option.builder().longOpt(option.getName()).hasArg().build());
+        }
+        CommandLineParser parser = new DefaultParser();
+        CommandLine line = parser.parse(options, args);
+        int warmupIterations = SupportOptions.fromOptionName("warmupIterations").getParsedValue(line);
+        int warmupTime = SupportOptions.fromOptionName("warmupTime").getParsedValue(line);
+        int measurementIterations = SupportOptions.fromOptionName("measurementIterations").getParsedValue(line);
+        int measurementTime = SupportOptions.fromOptionName("measurementTime").getParsedValue(line);
+        int forks = SupportOptions.fromOptionName("forks").getParsedValue(line);
+        int threads = SupportOptions.fromOptionName("threads").getParsedValue(line);
+        String fileName = SupportOptions.fromOptionName("resultFile").getParsedValue(line);
         String suffix = "json";
         if (fileName.contains(".")) {
             suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
         }
         ResultFormatType resultFormatType = ResultFormatType.valueOf(suffix.toUpperCase());
 
-        Options opt = new OptionsBuilder()
+        ChainedOptionsBuilder optionsBuilder = new OptionsBuilder()
                 .detectJvmArgs()
                 .resultFormat(resultFormatType)
                 .result(fileName)
                 .include(H1.class.getSimpleName())
                 .warmupIterations(warmupIterations)
-                .warmupTime(TimeValue.seconds(10))
+                .warmupTime(TimeValue.seconds(warmupTime))
                 .measurementIterations(measurementIterations)
-                .measurementTime(TimeValue.seconds(10))
+                .measurementTime(TimeValue.seconds(measurementTime))
                 .threads(threads)
-                .forks(forks)
-                .build();
-        new Runner(opt).run();
-    }
-
-    private static int getInt(Map<String, String> properties, String name, int defaultValue) {
-        String value = properties.get(name);
-        int result = defaultValue;
-        try {
-            if (value != null) {
-                result = Integer.parseInt(value);
-            }
-        } catch (NumberFormatException ignore) {
+                .forks(forks);
+        Class<? extends Profiler>[] profilers = SupportOptions.fromOptionName("profilers").getParsedValue(line);
+        for (Class<? extends Profiler> profiler : profilers) {
+            optionsBuilder.addProfiler(profiler);
         }
-        return result;
-    }
-
-    private static String getString(Map<String, String> properties, String name, String defaultValue) {
-        return properties.getOrDefault(name, defaultValue);
-    }
-
-    private static Map<String, String> parseArguments(String[] args) {
-        Map<String, String> properties = new LinkedHashMap<>();
-        for (int i = 0; i < args.length; i += 2) {
-            String argName = args[i];
-            String argValue = null;
-            if (i + 1 < args.length) {
-                argValue = args[i + 1];
-            }
-            properties.put(argName, argValue);
-        }
-        return properties;
+        new Runner(optionsBuilder.build()).run();
     }
 }
