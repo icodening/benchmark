@@ -15,7 +15,7 @@ enum SupportProfilers {
     GC("gc", GCProfiler.class),
     CLASSLOADER("classloader", ClassloaderProfiler.class),
     COMPILER("compiler", CompilerProfiler.class),
-    Pauses("pauses", PausesProfiler.class),
+    PAUSES("pauses", PausesProfiler.class),
     MEMORY("memory", HotspotMemoryProfiler.class),
     ;
 
