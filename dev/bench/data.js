@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1707186843422,
+  "lastUpdate": 1707187817188,
   "repoUrl": "https://github.com/icodening/benchmark",
   "entries": {
     "JMH Benchmark": [
@@ -280,6 +280,90 @@ window.BENCHMARK_DATA = {
           {
             "name": "org.example.benchmark.client.H1.webClientBenchmark",
             "value": 0.001569699854381386,
+            "unit": "s/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 32"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "cleverbn96@gmail.com",
+            "name": "icodening",
+            "username": "icodening"
+          },
+          "committer": {
+            "email": "cleverbn96@gmail.com",
+            "name": "icodening",
+            "username": "icodening"
+          },
+          "distinct": true,
+          "id": "c2311686ed5833d129f8becb235f04f457e16adb",
+          "message": "simplify code",
+          "timestamp": "2024-02-06T10:38:27+08:00",
+          "tree_id": "dc67033b2852bb297160d41a9298c9991e0b8745",
+          "url": "https://github.com/icodening/benchmark/commit/c2311686ed5833d129f8becb235f04f457e16adb"
+        },
+        "date": 1707187816846,
+        "tool": "jmh",
+        "benches": [
+          {
+            "name": "org.example.benchmark.client.H1.apacheHC5Benchmark",
+            "value": 25289.794192992907,
+            "unit": "ops/s",
+            "extra": "iterations: 3\nforks: 1\nthreads: 32"
+          },
+          {
+            "name": "org.example.benchmark.client.H1.feignClientBenchmark",
+            "value": 21845.57790227912,
+            "unit": "ops/s",
+            "extra": "iterations: 3\nforks: 1\nthreads: 32"
+          },
+          {
+            "name": "org.example.benchmark.client.H1.okHttpClientBenchmark",
+            "value": 28002.04295809045,
+            "unit": "ops/s",
+            "extra": "iterations: 3\nforks: 1\nthreads: 32"
+          },
+          {
+            "name": "org.example.benchmark.client.H1.restTemplateBenchmark",
+            "value": 24218.168898831005,
+            "unit": "ops/s",
+            "extra": "iterations: 3\nforks: 1\nthreads: 32"
+          },
+          {
+            "name": "org.example.benchmark.client.H1.webClientBenchmark",
+            "value": 20473.7643333651,
+            "unit": "ops/s",
+            "extra": "iterations: 3\nforks: 1\nthreads: 32"
+          },
+          {
+            "name": "org.example.benchmark.client.H1.apacheHC5Benchmark",
+            "value": 0.0013138327527827314,
+            "unit": "s/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 32"
+          },
+          {
+            "name": "org.example.benchmark.client.H1.feignClientBenchmark",
+            "value": 0.001471028571435559,
+            "unit": "s/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 32"
+          },
+          {
+            "name": "org.example.benchmark.client.H1.okHttpClientBenchmark",
+            "value": 0.0011748207887795914,
+            "unit": "s/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 32"
+          },
+          {
+            "name": "org.example.benchmark.client.H1.restTemplateBenchmark",
+            "value": 0.001331832821581385,
+            "unit": "s/op",
+            "extra": "iterations: 3\nforks: 1\nthreads: 32"
+          },
+          {
+            "name": "org.example.benchmark.client.H1.webClientBenchmark",
+            "value": 0.0016184498164948172,
             "unit": "s/op",
             "extra": "iterations: 3\nforks: 1\nthreads: 32"
           }
