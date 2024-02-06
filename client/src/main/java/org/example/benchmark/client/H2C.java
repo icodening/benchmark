@@ -11,9 +11,7 @@ import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 import org.apache.hc.client5.http.impl.async.HttpAsyncClients;
 import org.apache.hc.core5.http.Method;
 import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Mode;
-import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.runner.Runner;
@@ -81,18 +79,14 @@ public class H2C {
         return client;
     }
 
-    @BenchmarkMode({Mode.Throughput})
     @Benchmark
-    @OutputTimeUnit(TimeUnit.MILLISECONDS)
     public void apacheHC5() throws Throwable {
         SimpleHttpRequest request = SimpleHttpRequest.create(Method.GET, URI.create(REMOTE_ENDPOINT));
         Future<SimpleHttpResponse> future = hc5.execute(request, null);
         future.get();
     }
 
-    @BenchmarkMode({Mode.Throughput})
     @Benchmark
-    @OutputTimeUnit(TimeUnit.MILLISECONDS)
     public void reactorNetty() {
         this.nettyClient.get()
                 .uri(REMOTE_ENDPOINT)
@@ -100,9 +94,7 @@ public class H2C {
                 .blockFirst();
     }
 
-    @BenchmarkMode({Mode.Throughput})
     @Benchmark
-    @OutputTimeUnit(TimeUnit.MILLISECONDS)
     public void webClient() {
         this.webClient.get()
                 .uri(REMOTE_ENDPOINT)
@@ -110,9 +102,7 @@ public class H2C {
                 .block();
     }
 
-    @BenchmarkMode({Mode.Throughput})
     @Benchmark
-    @OutputTimeUnit(TimeUnit.MILLISECONDS)
     public void okHttpClient() throws Throwable {
         Request request = new Request.Builder()
                 .url(REMOTE_ENDPOINT)
@@ -127,7 +117,6 @@ public class H2C {
         }
     }
 
-
     public static void main(String[] args) throws Throwable {
         Options opt;
         ChainedOptionsBuilder optBuilder = new OptionsBuilder()
@@ -136,6 +125,9 @@ public class H2C {
                 .warmupTime(TimeValue.seconds(10))
                 .measurementIterations(3)
                 .measurementTime(TimeValue.seconds(10))
+                .mode(Mode.Throughput)
+                .mode(Mode.AverageTime)
+                .timeUnit(TimeUnit.MILLISECONDS)
                 .threads(CONCURRENT).forks(1);
         opt = optBuilder.build();
 

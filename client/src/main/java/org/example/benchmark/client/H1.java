@@ -17,9 +17,7 @@ import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.apache.hc.core5.http.HttpEntity;
 import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Mode;
-import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.profile.Profiler;
@@ -94,9 +92,7 @@ public class H1 {
                 .build();
     }
 
-    @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
     @Benchmark
-    @OutputTimeUnit(TimeUnit.SECONDS)
     public void apacheHC5Benchmark() throws Throwable {
         try (CloseableHttpResponse response = apacheHC5.execute(new HttpGet(REMOTE_ENDPOINT))) {
             HttpEntity entity = response.getEntity();
@@ -112,23 +108,17 @@ public class H1 {
         }
     }
 
-    @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
     @Benchmark
-    @OutputTimeUnit(TimeUnit.SECONDS)
     public void restTemplateBenchmark() {
         String resp = this.restTemplate.getForObject(URI.create(REMOTE_ENDPOINT), String.class);
     }
 
-    @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
     @Benchmark
-    @OutputTimeUnit(TimeUnit.SECONDS)
     public void feignClientBenchmark() {
         String resp = feignService.benchmark();
     }
 
-    @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
     @Benchmark
-    @OutputTimeUnit(TimeUnit.SECONDS)
     public void webClientBenchmark() {
         this.webClient
                 .get()
@@ -137,10 +127,7 @@ public class H1 {
                 .blockFirst();
     }
 
-
-    @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
     @Benchmark
-    @OutputTimeUnit(TimeUnit.SECONDS)
     public void okHttpClientBenchmark() throws Throwable {
         Request request = new Request.Builder()
                 .url(REMOTE_ENDPOINT)
@@ -184,6 +171,9 @@ public class H1 {
                 .warmupTime(TimeValue.seconds(warmupTime))
                 .measurementIterations(measurementIterations)
                 .measurementTime(TimeValue.seconds(measurementTime))
+                .mode(Mode.Throughput)
+                .mode(Mode.AverageTime)
+                .timeUnit(TimeUnit.SECONDS)
                 .threads(threads)
                 .forks(forks);
         Class<? extends Profiler>[] profilers = SupportOptions.fromOptionName("profilers").getParsedValue(line);
