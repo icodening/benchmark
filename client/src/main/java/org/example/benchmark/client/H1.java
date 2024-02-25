@@ -108,17 +108,17 @@ public class H1 {
         }
     }
 
-    @Benchmark
+//    @Benchmark
     public void restTemplateBenchmark() {
         String resp = this.restTemplate.getForObject(URI.create(REMOTE_ENDPOINT), String.class);
     }
 
-    @Benchmark
+//    @Benchmark
     public void feignClientBenchmark() {
         String resp = feignService.benchmark();
     }
 
-    @Benchmark
+//    @Benchmark
     public void webClientBenchmark() {
         this.webClient
                 .get()
@@ -127,7 +127,7 @@ public class H1 {
                 .blockFirst();
     }
 
-    @Benchmark
+//    @Benchmark
     public void okHttpClientBenchmark() throws Throwable {
         Request request = new Request.Builder()
                 .url(REMOTE_ENDPOINT)
