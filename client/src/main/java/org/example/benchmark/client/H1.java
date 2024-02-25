@@ -157,8 +157,10 @@ public class H1 {
         int threads = SupportOption.fromOptionName("threads").getParsedValue(line);
         String fileName = SupportOption.fromOptionName("resultFile").getParsedValue(line);
         String suffix = "json";
-        if (fileName.contains(".")) {
-            suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
+        int idx = fileName.lastIndexOf(".");
+        if (idx != -1) {
+            suffix = fileName.substring(idx + 1);
+            fileName = fileName.substring(0, idx) + "_" + System.currentTimeMillis() + "." + suffix;
         }
         ResultFormatType resultFormatType = ResultFormatType.valueOf(suffix.toUpperCase());
 
