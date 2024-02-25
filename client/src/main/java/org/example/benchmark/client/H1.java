@@ -144,18 +144,18 @@ public class H1 {
 
     public static void main(String[] args) throws Throwable {
         org.apache.commons.cli.Options options = new org.apache.commons.cli.Options();
-        for (SupportOptions option : SupportOptions.values()) {
+        for (SupportOption option : SupportOption.values()) {
             options.addOption(Option.builder().longOpt(option.getName()).hasArg().build());
         }
         CommandLineParser parser = new DefaultParser();
         CommandLine line = parser.parse(options, args);
-        int warmupIterations = SupportOptions.fromOptionName("warmupIterations").getParsedValue(line);
-        int warmupTime = SupportOptions.fromOptionName("warmupTime").getParsedValue(line);
-        int measurementIterations = SupportOptions.fromOptionName("measurementIterations").getParsedValue(line);
-        int measurementTime = SupportOptions.fromOptionName("measurementTime").getParsedValue(line);
-        int forks = SupportOptions.fromOptionName("forks").getParsedValue(line);
-        int threads = SupportOptions.fromOptionName("threads").getParsedValue(line);
-        String fileName = SupportOptions.fromOptionName("resultFile").getParsedValue(line);
+        int warmupIterations = SupportOption.fromOptionName("warmupIterations").getParsedValue(line);
+        int warmupTime = SupportOption.fromOptionName("warmupTime").getParsedValue(line);
+        int measurementIterations = SupportOption.fromOptionName("measurementIterations").getParsedValue(line);
+        int measurementTime = SupportOption.fromOptionName("measurementTime").getParsedValue(line);
+        int forks = SupportOption.fromOptionName("forks").getParsedValue(line);
+        int threads = SupportOption.fromOptionName("threads").getParsedValue(line);
+        String fileName = SupportOption.fromOptionName("resultFile").getParsedValue(line);
         String suffix = "json";
         if (fileName.contains(".")) {
             suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
@@ -172,11 +172,11 @@ public class H1 {
                 .measurementIterations(measurementIterations)
                 .measurementTime(TimeValue.seconds(measurementTime))
                 .mode(Mode.Throughput)
-                .mode(Mode.AverageTime)
-                .timeUnit(TimeUnit.SECONDS)
+//                .mode(Mode.AverageTime)
+                .timeUnit(TimeUnit.NANOSECONDS)
                 .threads(threads)
                 .forks(forks);
-        Class<? extends Profiler>[] profilers = SupportOptions.fromOptionName("profilers").getParsedValue(line);
+        Class<? extends Profiler>[] profilers = SupportOption.fromOptionName("profilers").getParsedValue(line);
         for (Class<? extends Profiler> profiler : profilers) {
             optionsBuilder.addProfiler(profiler);
         }

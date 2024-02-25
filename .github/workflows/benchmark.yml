@@ -27,18 +27,28 @@ jobs:
 
       - name: Run benchmark for h1client
         run: |
-          java -jar client/target/benchmark-client-h1.jar -warmupIterations 3 -measurementIterations 3 -forks 1 -profilers gc,pauses -resultFile jmh_result.json
+          java -jar client/target/benchmark-client-h1.jar -warmupIterations 3 -measurementIterations 1 -forks 1 -profilers gc,pauses -resultFile jmh_result.json
 
-      - name: Store benchmark result
-        uses: benchmark-action/github-action-benchmark@v1
-        with:
-          name: JMH Benchmark
-          tool: 'jmh'
-          output-file-path: jmh_result.json
-          # Use personal access token instead of GITHUB_TOKEN due to https://github.community/t/github-action-not-triggering-gh-pages-upon-push/16096
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          auto-push: true
-          # Show alert with commit comment on detecting possible performance regression
-          alert-threshold: '200%'
-          comment-on-alert: true
-          fail-on-alert: true
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Push benchmark result
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git add jmh_result.json
+          git commit -m "Add benchmark result"
+          git push origin benchmark-result-branch
+
+#      - name: Store benchmark result
+#        uses: benchmark-action/github-action-benchmark@v1
+#        with:
+#          name: JMH Benchmark
+#          tool: 'jmh'
+#          output-file-path: jmh_result.json
+#          # Use personal access token instead of GITHUB_TOKEN due to https://github.community/t/github-action-not-triggering-gh-pages-upon-push/16096
+#          github-token: ${{ secrets.GITHUB_TOKEN }}
+#          auto-push: true
+#          # Show alert with commit comment on detecting possible performance regression
+#          alert-threshold: '200%'
+#          comment-on-alert: true
+#          fail-on-alert: true

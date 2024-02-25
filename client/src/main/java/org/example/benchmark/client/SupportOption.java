@@ -10,7 +10,7 @@ import java.util.function.Function;
  * @author icodening
  * @date 2024.02.06
  */
-public enum SupportOptions {
+public enum SupportOption {
 
     WARMUP_ITERATIONS("warmupIterations", "3", Integer::parseInt),
     WARMUP_TIME("warmupTime", "10", Integer::parseInt),
@@ -19,7 +19,7 @@ public enum SupportOptions {
     FORKS("forks", "1", Integer::parseInt),
     THREADS("threads", "32", Integer::parseInt),
     RESULT_FILE("resultFile", "result.json", (arg) -> arg),
-    PROFILER("profilers", "", SupportOptions::parseProfilers),
+    PROFILER("profilers", "", SupportOption::parseProfilers),
     ;
 
     private final String name;
@@ -28,7 +28,7 @@ public enum SupportOptions {
 
     private final Function<String, Object> parser;
 
-    SupportOptions(String name, String defaultValue, Function<String, Object> parser) {
+    SupportOption(String name, String defaultValue, Function<String, Object> parser) {
         this.name = name;
         this.defaultValue = defaultValue;
         this.parser = parser;
@@ -47,8 +47,8 @@ public enum SupportOptions {
         return defaultValue;
     }
 
-    public static SupportOptions fromOptionName(String name) {
-        for (SupportOptions options : SupportOptions.values()) {
+    public static SupportOption fromOptionName(String name) {
+        for (SupportOption options : SupportOption.values()) {
             if (options.getName().equals(name)) {
                 return options;
             }
@@ -58,6 +58,9 @@ public enum SupportOptions {
 
     private static Class<? extends Profiler>[] parseProfilers(String args) {
         ArrayList<Class<? extends Profiler>> classes = new ArrayList<>();
+        if (args == null || args.isEmpty()) {
+            return new Class[0];
+        }
         for (String p : args.split(",")) {
             Class<? extends Profiler> profiler = SupportProfilers.valueOf(p.toUpperCase()).getProfiler();
             classes.add(profiler);
