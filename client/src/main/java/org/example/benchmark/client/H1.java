@@ -173,8 +173,8 @@ public class H1 {
                 .warmupTime(TimeValue.seconds(warmupTime))
                 .measurementIterations(measurementIterations)
                 .measurementTime(TimeValue.seconds(measurementTime))
-                .mode(Mode.Throughput)
-//                .mode(Mode.AverageTime)
+//                .mode(Mode.Throughput)
+                .mode(Mode.AverageTime)
                 .timeUnit(TimeUnit.NANOSECONDS)
                 .threads(threads)
                 .forks(forks);
