@@ -1,0 +1,259 @@
+[
+    {
+        "jmhVersion" : "1.21",
+        "benchmark" : "org.example.benchmark.client.H1.apacheHC5Benchmark",
+        "mode" : "thrpt",
+        "threads" : 32,
+        "forks" : 1,
+        "jvm" : "/Users/lbn/devtools/zulu8/zulu-8.jdk/Contents/Home/jre/bin/java",
+        "jvmArgs" : [
+            "-Xmx128M",
+            "-Xms128M",
+            "-javaagent:/Applications/IntelliJ IDEA.app/Contents/lib/idea_rt.jar=62718:/Applications/IntelliJ IDEA.app/Contents/bin",
+            "-Dfile.encoding=UTF-8"
+        ],
+        "jdkVersion" : "1.8.0_312",
+        "vmName" : "OpenJDK 64-Bit Server VM",
+        "vmVersion" : "25.312-b07",
+        "warmupIterations" : 1,
+        "warmupTime" : "10 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 1,
+        "measurementTime" : "10 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 6.916882053982651E-6,
+            "scoreError" : "NaN",
+            "scoreConfidence" : [
+                "NaN",
+                "NaN"
+            ],
+            "scorePercentiles" : {
+                "0.0" : 6.916882053982651E-6,
+                "50.0" : 6.916882053982651E-6,
+                "90.0" : 6.916882053982651E-6,
+                "95.0" : 6.916882053982651E-6,
+                "99.0" : 6.916882053982651E-6,
+                "99.9" : 6.916882053982651E-6,
+                "99.99" : 6.916882053982651E-6,
+                "99.999" : 6.916882053982651E-6,
+                "99.9999" : 6.916882053982651E-6,
+                "100.0" : 6.916882053982651E-6
+            },
+            "scoreUnit" : "ops/ns",
+            "rawData" : [
+                [
+                    6.916882053982651E-6
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    },
+    {
+        "jmhVersion" : "1.21",
+        "benchmark" : "org.example.benchmark.client.H1.feignClientBenchmark",
+        "mode" : "thrpt",
+        "threads" : 32,
+        "forks" : 1,
+        "jvm" : "/Users/lbn/devtools/zulu8/zulu-8.jdk/Contents/Home/jre/bin/java",
+        "jvmArgs" : [
+            "-Xmx128M",
+            "-Xms128M",
+            "-javaagent:/Applications/IntelliJ IDEA.app/Contents/lib/idea_rt.jar=62718:/Applications/IntelliJ IDEA.app/Contents/bin",
+            "-Dfile.encoding=UTF-8"
+        ],
+        "jdkVersion" : "1.8.0_312",
+        "vmName" : "OpenJDK 64-Bit Server VM",
+        "vmVersion" : "25.312-b07",
+        "warmupIterations" : 1,
+        "warmupTime" : "10 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 1,
+        "measurementTime" : "10 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 8.639912359589148E-6,
+            "scoreError" : "NaN",
+            "scoreConfidence" : [
+                "NaN",
+                "NaN"
+            ],
+            "scorePercentiles" : {
+                "0.0" : 8.639912359589148E-6,
+                "50.0" : 8.639912359589148E-6,
+                "90.0" : 8.639912359589148E-6,
+                "95.0" : 8.639912359589148E-6,
+                "99.0" : 8.639912359589148E-6,
+                "99.9" : 8.639912359589148E-6,
+                "99.99" : 8.639912359589148E-6,
+                "99.999" : 8.639912359589148E-6,
+                "99.9999" : 8.639912359589148E-6,
+                "100.0" : 8.639912359589148E-6
+            },
+            "scoreUnit" : "ops/ns",
+            "rawData" : [
+                [
+                    8.639912359589148E-6
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    },
+    {
+        "jmhVersion" : "1.21",
+        "benchmark" : "org.example.benchmark.client.H1.okHttpClientBenchmark",
+        "mode" : "thrpt",
+        "threads" : 32,
+        "forks" : 1,
+        "jvm" : "/Users/lbn/devtools/zulu8/zulu-8.jdk/Contents/Home/jre/bin/java",
+        "jvmArgs" : [
+            "-Xmx128M",
+            "-Xms128M",
+            "-javaagent:/Applications/IntelliJ IDEA.app/Contents/lib/idea_rt.jar=62718:/Applications/IntelliJ IDEA.app/Contents/bin",
+            "-Dfile.encoding=UTF-8"
+        ],
+        "jdkVersion" : "1.8.0_312",
+        "vmName" : "OpenJDK 64-Bit Server VM",
+        "vmVersion" : "25.312-b07",
+        "warmupIterations" : 1,
+        "warmupTime" : "10 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 1,
+        "measurementTime" : "10 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 8.981202150932564E-6,
+            "scoreError" : "NaN",
+            "scoreConfidence" : [
+                "NaN",
+                "NaN"
+            ],
+            "scorePercentiles" : {
+                "0.0" : 8.981202150932564E-6,
+                "50.0" : 8.981202150932564E-6,
+                "90.0" : 8.981202150932564E-6,
+                "95.0" : 8.981202150932564E-6,
+                "99.0" : 8.981202150932564E-6,
+                "99.9" : 8.981202150932564E-6,
+                "99.99" : 8.981202150932564E-6,
+                "99.999" : 8.981202150932564E-6,
+                "99.9999" : 8.981202150932564E-6,
+                "100.0" : 8.981202150932564E-6
+            },
+            "scoreUnit" : "ops/ns",
+            "rawData" : [
+                [
+                    8.981202150932564E-6
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    },
+    {
+        "jmhVersion" : "1.21",
+        "benchmark" : "org.example.benchmark.client.H1.restTemplateBenchmark",
+        "mode" : "thrpt",
+        "threads" : 32,
+        "forks" : 1,
+        "jvm" : "/Users/lbn/devtools/zulu8/zulu-8.jdk/Contents/Home/jre/bin/java",
+        "jvmArgs" : [
+            "-Xmx128M",
+            "-Xms128M",
+            "-javaagent:/Applications/IntelliJ IDEA.app/Contents/lib/idea_rt.jar=62718:/Applications/IntelliJ IDEA.app/Contents/bin",
+            "-Dfile.encoding=UTF-8"
+        ],
+        "jdkVersion" : "1.8.0_312",
+        "vmName" : "OpenJDK 64-Bit Server VM",
+        "vmVersion" : "25.312-b07",
+        "warmupIterations" : 1,
+        "warmupTime" : "10 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 1,
+        "measurementTime" : "10 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 7.471052583548668E-6,
+            "scoreError" : "NaN",
+            "scoreConfidence" : [
+                "NaN",
+                "NaN"
+            ],
+            "scorePercentiles" : {
+                "0.0" : 7.471052583548668E-6,
+                "50.0" : 7.471052583548668E-6,
+                "90.0" : 7.471052583548668E-6,
+                "95.0" : 7.471052583548668E-6,
+                "99.0" : 7.471052583548668E-6,
+                "99.9" : 7.471052583548668E-6,
+                "99.99" : 7.471052583548668E-6,
+                "99.999" : 7.471052583548668E-6,
+                "99.9999" : 7.471052583548668E-6,
+                "100.0" : 7.471052583548668E-6
+            },
+            "scoreUnit" : "ops/ns",
+            "rawData" : [
+                [
+                    7.471052583548668E-6
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    },
+    {
+        "jmhVersion" : "1.21",
+        "benchmark" : "org.example.benchmark.client.H1.webClientBenchmark",
+        "mode" : "thrpt",
+        "threads" : 32,
+        "forks" : 1,
+        "jvm" : "/Users/lbn/devtools/zulu8/zulu-8.jdk/Contents/Home/jre/bin/java",
+        "jvmArgs" : [
+            "-Xmx128M",
+            "-Xms128M",
+            "-javaagent:/Applications/IntelliJ IDEA.app/Contents/lib/idea_rt.jar=62718:/Applications/IntelliJ IDEA.app/Contents/bin",
+            "-Dfile.encoding=UTF-8"
+        ],
+        "jdkVersion" : "1.8.0_312",
+        "vmName" : "OpenJDK 64-Bit Server VM",
+        "vmVersion" : "25.312-b07",
+        "warmupIterations" : 1,
+        "warmupTime" : "10 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 1,
+        "measurementTime" : "10 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 6.281011449258996E-6,
+            "scoreError" : "NaN",
+            "scoreConfidence" : [
+                "NaN",
+                "NaN"
+            ],
+            "scorePercentiles" : {
+                "0.0" : 6.281011449258996E-6,
+                "50.0" : 6.281011449258996E-6,
+                "90.0" : 6.281011449258996E-6,
+                "95.0" : 6.281011449258996E-6,
+                "99.0" : 6.281011449258996E-6,
+                "99.9" : 6.281011449258996E-6,
+                "99.99" : 6.281011449258996E-6,
+                "99.999" : 6.281011449258996E-6,
+                "99.9999" : 6.281011449258996E-6,
+                "100.0" : 6.281011449258996E-6
+            },
+            "scoreUnit" : "ops/ns",
+            "rawData" : [
+                [
+                    6.281011449258996E-6
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    }
+]
+
+

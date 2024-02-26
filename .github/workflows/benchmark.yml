@@ -37,7 +37,7 @@ jobs:
           git config --global user.name "GitHub Actions"
           git add ./jmh_result_*.json
           git commit -m "Add benchmark result"
-          git push origin benchmark-result-branch
+          git push origin benchmark-result-branch:benchmark-result-branch
 
 #      - name: Store benchmark result
 #        uses: benchmark-action/github-action-benchmark@v1
