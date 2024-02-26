@@ -37,6 +37,7 @@ jobs:
           git config --global user.name "GitHub Actions"
           git checkout --orphan benchmark-result-branch
           git rm -rf .
+          git pull origin benchmark-result-branch
           git add ./jmh_result_*.json
           git commit -m "Add benchmark result"
           git push origin benchmark-result-branch:benchmark-result-branch
