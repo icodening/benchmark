@@ -1,0 +1,5 @@
+META-INF/spring-configuration-metadata.json
+org/example/benchmark/server/http/config/ServerConfiguration.class
+org/example/benchmark/server/http/config/HttpServerProperties.class
+org/example/benchmark/server/http/HttpServerApplication.class
+org/example/benchmark/server/http/controller/MockResponseController.class

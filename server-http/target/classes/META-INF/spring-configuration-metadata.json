@@ -1,0 +1,18 @@
+{
+  "groups": [
+    {
+      "name": "server",
+      "type": "org.example.benchmark.server.http.config.HttpServerProperties",
+      "sourceType": "org.example.benchmark.server.http.config.HttpServerProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "server.mock-response-size",
+      "type": "org.springframework.util.unit.DataSize",
+      "description": "mock response body size",
+      "sourceType": "org.example.benchmark.server.http.config.HttpServerProperties"
+    }
+  ],
+  "hints": []
+}

@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: benchmark
+          uri: http://127.0.0.1:8080
+          predicates:
+            - Path=/**
+          filters:
+            - MockResponse=1KB
