@@ -1,5 +1,0 @@
-org/example/benchmark/scg/GatewayApplication.class
-org/example/benchmark/scg/config/GatewayServerConfiguration.class
-org/example/benchmark/scg/filter/MockResponseGatewayFilterFactory$Config.class
-org/example/benchmark/scg/filter/MockResponseGatewayFilterFactory.class
-org/example/benchmark/scg/config/GatewayServerConfiguration$1.class
