@@ -32,9 +32,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Collections;
+import java.util.StringJoiner;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -43,6 +45,8 @@ import java.util.concurrent.TimeUnit;
  */
 @State(Scope.Benchmark)
 public class H1 {
+
+    private static final String BENCHMARK_TYPE = "jmh";
 
     private static final String REMOTE_ADDRESS = "http://127.0.0.1:8080";
 
@@ -108,17 +112,17 @@ public class H1 {
         }
     }
 
-//    @Benchmark
+    @Benchmark
     public void restTemplateBenchmark() {
         String resp = this.restTemplate.getForObject(URI.create(REMOTE_ENDPOINT), String.class);
     }
 
-//    @Benchmark
+    //    @Benchmark
     public void feignClientBenchmark() {
         String resp = feignService.benchmark();
     }
 
-//    @Benchmark
+    //    @Benchmark
     public void webClientBenchmark() {
         this.webClient
                 .get()
@@ -127,7 +131,7 @@ public class H1 {
                 .blockFirst();
     }
 
-//    @Benchmark
+    //    @Benchmark
     public void okHttpClientBenchmark() throws Throwable {
         Request request = new Request.Builder()
                 .url(REMOTE_ENDPOINT)
@@ -155,15 +159,26 @@ public class H1 {
         int measurementTime = SupportOption.fromOptionName("measurementTime").getParsedValue(line);
         int forks = SupportOption.fromOptionName("forks").getParsedValue(line);
         int threads = SupportOption.fromOptionName("threads").getParsedValue(line);
-        String fileName = SupportOption.fromOptionName("resultFile").getParsedValue(line);
-        String suffix = "json";
-        int idx = fileName.lastIndexOf(".");
-        if (idx != -1) {
-            suffix = fileName.substring(idx + 1);
-            fileName = fileName.substring(0, idx) + "_" + System.currentTimeMillis() + "." + suffix;
+        String benchmarkName = SupportOption.fromOptionName("benchmarkName").getParsedValue(line);
+        if (benchmarkName == null || benchmarkName.isEmpty()) {
+            throw new IllegalArgumentException("Benchmark name must be not null.");
         }
+        String suffix = "json";
+        File benchmarkNameDir = new File(BENCHMARK_TYPE + File.separator + benchmarkName);
+        if (!benchmarkNameDir.exists()) {
+            if (!benchmarkNameDir.mkdirs()) {
+                throw new IllegalStateException("Could not create directory '" + benchmarkName + "'");
+            }
+        }
+        if (!benchmarkNameDir.isDirectory()) {
+            throw new IllegalStateException("'" + benchmarkName + "' exists, but not a directory'");
+        }
+        StringJoiner joiner = new StringJoiner(File.separator);
+        String fileName = joiner.add(BENCHMARK_TYPE)
+                .add(benchmarkName)
+                .add(System.currentTimeMillis() + "." + suffix)
+                .toString();
         ResultFormatType resultFormatType = ResultFormatType.valueOf(suffix.toUpperCase());
-
         ChainedOptionsBuilder optionsBuilder = new OptionsBuilder()
                 .detectJvmArgs()
                 .resultFormat(resultFormatType)
@@ -173,9 +188,9 @@ public class H1 {
                 .warmupTime(TimeValue.seconds(warmupTime))
                 .measurementIterations(measurementIterations)
                 .measurementTime(TimeValue.seconds(measurementTime))
-//                .mode(Mode.Throughput)
+                .mode(Mode.Throughput)
                 .mode(Mode.AverageTime)
-                .timeUnit(TimeUnit.NANOSECONDS)
+                .timeUnit(TimeUnit.MILLISECONDS)
                 .threads(threads)
                 .forks(forks);
         Class<? extends Profiler>[] profilers = SupportOption.fromOptionName("profilers").getParsedValue(line);
