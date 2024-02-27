@@ -159,12 +159,21 @@ public class H1 {
         int measurementTime = SupportOption.fromOptionName("measurementTime").getParsedValue(line);
         int forks = SupportOption.fromOptionName("forks").getParsedValue(line);
         int threads = SupportOption.fromOptionName("threads").getParsedValue(line);
+        String version = SupportOption.fromOptionName("version").getParsedValue(line);
         String benchmarkName = SupportOption.fromOptionName("benchmarkName").getParsedValue(line);
         if (benchmarkName == null || benchmarkName.isEmpty()) {
             throw new IllegalArgumentException("Benchmark name must be not null.");
         }
+        if (version == null || version.isEmpty()) {
+            throw new IllegalArgumentException("Version must be not null.");
+        }
         String suffix = "json";
-        File benchmarkNameDir = new File(BENCHMARK_TYPE + File.separator + benchmarkName);
+        String benchmarkNameDirName = new StringJoiner(File.separator)
+                .add(version)
+                .add(BENCHMARK_TYPE)
+                .add(benchmarkName)
+                .toString();
+        File benchmarkNameDir = new File(benchmarkNameDirName);
         if (!benchmarkNameDir.exists()) {
             if (!benchmarkNameDir.mkdirs()) {
                 throw new IllegalStateException("Could not create directory '" + benchmarkName + "'");
@@ -173,8 +182,9 @@ public class H1 {
         if (!benchmarkNameDir.isDirectory()) {
             throw new IllegalStateException("'" + benchmarkName + "' exists, but not a directory'");
         }
-        StringJoiner joiner = new StringJoiner(File.separator);
-        String fileName = joiner.add(BENCHMARK_TYPE)
+        String fileName = new StringJoiner(File.separator)
+                .add(version)
+                .add(BENCHMARK_TYPE)
                 .add(benchmarkName)
                 .add(System.currentTimeMillis() + "." + suffix)
                 .toString();

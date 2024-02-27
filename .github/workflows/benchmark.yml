@@ -27,7 +27,7 @@ jobs:
 
       - name: Run benchmark for h1client
         run: |
-          java -jar client/target/benchmark-client-h1.jar -warmupIterations 3 -measurementIterations 1 -forks 1 -benchmarkName h1
+          java -jar client/target/benchmark-client-h1.jar -warmupIterations 3 -measurementIterations 1 -forks 1 -benchmarkName h1 -version 1.0
 
 #      - name: Checkout code
 #        uses: actions/checkout@v2

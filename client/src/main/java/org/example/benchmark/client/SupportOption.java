@@ -19,6 +19,7 @@ public enum SupportOption {
     FORKS("forks", "1", Integer::parseInt),
     THREADS("threads", "32", Integer::parseInt),
     RESULT_FILE("resultFile", "result.json", (arg) -> arg),
+    VERSION("version", null, (arg) -> arg),
     BENCHMARK_NAME("benchmarkName", null, (arg) -> arg),
     PROFILER("profilers", "", SupportOption::parseProfilers),
     ;
