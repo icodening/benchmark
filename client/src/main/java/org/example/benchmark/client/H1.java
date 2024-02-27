@@ -197,7 +197,6 @@ public class H1 {
         for (Class<? extends Profiler> profiler : profilers) {
             optionsBuilder.addProfiler(profiler);
         }
-
         new Runner(optionsBuilder.build()).run();
     }
 }
