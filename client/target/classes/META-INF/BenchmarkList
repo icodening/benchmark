@@ -1,6 +1,0 @@
-JMH S 32 org.example.benchmark.client.H2C S 60 org.example.benchmark.client.generated.H2C_apacheHC5_jmhTest S 9 apacheHC5 S 10 Throughput E A 1 1 1 E E E E E E E E E E E E E E E E E 
-JMH S 32 org.example.benchmark.client.H2C S 60 org.example.benchmark.client.generated.H2C_webClient_jmhTest S 9 webClient S 10 Throughput E A 1 1 1 E E E E E E E E E E E E E E E E E 
-JMH S 32 org.example.benchmark.client.H2C S 63 org.example.benchmark.client.generated.H2C_reactorNetty_jmhTest S 12 reactorNetty S 10 Throughput E A 1 1 1 E E E E E E E E E E E E E E E E E 
-JMH S 32 org.example.benchmark.client.H2C S 63 org.example.benchmark.client.generated.H2C_okHttpClient_jmhTest S 12 okHttpClient S 10 Throughput E A 1 1 1 E E E E E E E E E E E E E E E E E 
-JMH S 31 org.example.benchmark.client.H1 S 71 org.example.benchmark.client.generated.H1_restTemplateBenchmark_jmhTest S 21 restTemplateBenchmark S 10 Throughput E A 1 1 1 E E E E E E E E E E E E E E E E E 
-JMH S 31 org.example.benchmark.client.H1 S 68 org.example.benchmark.client.generated.H1_apacheHC5Benchmark_jmhTest S 18 apacheHC5Benchmark S 10 Throughput E A 1 1 1 E E E E E E E E E E E E E E E E E 
