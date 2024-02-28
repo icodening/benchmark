@@ -170,7 +170,7 @@ public class H1 {
         String suffix = "json";
         String benchmarkNameDirName = new StringJoiner(File.separator)
                 .add(version)
-                .add(BENCHMARK_TYPE)
+//                .add(BENCHMARK_TYPE)
                 .add(benchmarkName)
                 .toString();
         File benchmarkNameDir = new File(benchmarkNameDirName);
@@ -186,7 +186,7 @@ public class H1 {
                 .add(version)
                 .add(BENCHMARK_TYPE)
                 .add(benchmarkName)
-                .add(System.currentTimeMillis() + "." + suffix)
+                .add("jmh_" + System.currentTimeMillis() + "." + suffix)
                 .toString();
         ResultFormatType resultFormatType = ResultFormatType.valueOf(suffix.toUpperCase());
         ChainedOptionsBuilder optionsBuilder = new OptionsBuilder()
