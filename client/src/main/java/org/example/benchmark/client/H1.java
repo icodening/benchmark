@@ -184,7 +184,7 @@ public class H1 {
         }
         String fileName = new StringJoiner(File.separator)
                 .add(version)
-                .add(BENCHMARK_TYPE)
+//                .add(BENCHMARK_TYPE)
                 .add(benchmarkName)
                 .add("jmh_" + System.currentTimeMillis() + "." + suffix)
                 .toString();
